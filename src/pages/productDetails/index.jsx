@@ -4,7 +4,7 @@ import { ShoppingCartContext } from "../../context";
 
 function ProductDetails(){
 
-    const {productDetails, setProductDetails } = useContext(ShoppingCartContext)
+    const {productDetails, setProductDetails, handleAddToCart } = useContext(ShoppingCartContext)
     const navigate = useNavigate()
 
     const {id} = useParams();
@@ -29,16 +29,16 @@ function ProductDetails(){
 
      console.log(productDetails)
 
-     function handleGoToCart(){
-        navigate('/cart')
-     }
+    //  function handleGoToCart(){
+    //     navigate('/cart')
+    //  }
 
     if(!productDetails) return <h3 className="text-center font-bold text-lg">Loading product details please wait.....</h3>
 
     return (
         <div className="flex flex-col md:flex-row py-5 my-5">
            <div className="w-full md:w-1/2">
-             <div>
+             <div >
                 <img className="w-150 my-5 shadow-xl rounded-lg p-5 mx-auto" src={productDetails?.thumbnail} alt={productDetails?.title} />
                 {/* <h1>{productDetails?.title}</h1> */}
             </div>
@@ -47,8 +47,8 @@ function ProductDetails(){
                 <div className="flex flex-wrap justify-center">
                     {
                     productDetails.images.length > 0 ?
-                    productDetails?.images.map(img =>
-                         <img className="w-32 m-2 shadow-xl rounded-lg p-2" src={img} alt={productDetails?.title} />)
+                    productDetails?.images.map((img,index) =>
+                         <img key={index} className="w-32 m-2 shadow-xl rounded-lg p-2" src={img} alt={productDetails?.title} />)
                     : null
                 }
                 </div>
@@ -59,7 +59,7 @@ function ProductDetails(){
                  <h1 className="text-4xl font-bold text-center md:text-left">{productDetails?.title}</h1>
                  <p className="my-5 text-xl font-bold text-green-800 text-center md:text-left">${productDetails?.price}</p>
                  <button className="border rounded px-5 py-3 cursor-pointer hover:bg-gray-900 hover:text-white"
-                 onClick={()=>handleGoToCart()}>Add to cart</button>
+                 onClick={()=>handleAddToCart(productDetails)}>Add to cart</button>
             </div>
         </div>
     )
