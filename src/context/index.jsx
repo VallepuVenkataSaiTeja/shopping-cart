@@ -4,6 +4,7 @@
 // consume the context using useContext
 
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const ShoppingCartContext = createContext();
 
@@ -13,6 +14,7 @@ function ShoppingCartProvider({children}){
     const [listOfProducts, setListOfProducts] = useState([]);
     const [productDetails, setProductDetails] = useState(null);
     const [cartItems, setCartItems] = useState([]);
+    const navigate = useNavigate();
 
     async function fetchListOfProducts(){
         const apiResponse = await fetch('https://dummyjson.com/products');
@@ -27,6 +29,7 @@ function ShoppingCartProvider({children}){
 
     useEffect(()=>{
         fetchListOfProducts();
+        setCartItems(JSON.parse(localStorage.getItem('cartItems')) || [])
     },[])
 
     function handleAddToCart(getProductDetails){
@@ -40,16 +43,23 @@ function ShoppingCartProvider({children}){
          if(findIndexOfCurrentItem === -1){
             copyExtCartItems.push({
                 ...getProductDetails,
-                quamtity: 1,
-                totalPrice: getProductDetails.peice
+                quantity: 1,
+                totalPrice: getProductDetails.price
             })
+            
+         } else {
+
          }
+         console.log(copyExtCartItems , "copyExtCartItems");
+         setCartItems(copyExtCartItems);
+         localStorage.setItem('cartItems', JSON.stringify(copyExtCartItems))
+         navigate('cart')
     }
 
     // console.log(listOfProducts)
 
     return (
-        <ShoppingCartContext.Provider value={{listOfProducts, loading , setLoading , productDetails , setProductDetails, handleAddToCart}}>
+        <ShoppingCartContext.Provider value={{listOfProducts, loading , setLoading , productDetails , setProductDetails, handleAddToCart, cartItems}}>
             {children}
         </ShoppingCartContext.Provider>
     )

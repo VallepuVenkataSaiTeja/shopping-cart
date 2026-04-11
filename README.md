@@ -9,3 +9,7 @@
 - we get the id through useParams , and navitage for navigation
 - display the price , imges , price , title , add to cart button 
 - on click of cart , it will go to the cart page
+- if the product item is not there , then we are pushing it in a array
+- using local storage to stored the pushed product item also
+- designed cart page with cart listings, order summary
+- added remove , increase , decrease buttons
