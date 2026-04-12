@@ -46,20 +46,44 @@ function ShoppingCartProvider({children}){
                 quantity: 1,
                 totalPrice: getProductDetails.price
             })
+            navigate('cart')
             
          } else {
+               copyExtCartItems[findIndexOfCurrentItem] = {
+                  ...copyExtCartItems[findIndexOfCurrentItem],
+                  quantity: copyExtCartItems[findIndexOfCurrentItem].quantity + 1,
+                  totalPrice: (copyExtCartItems[findIndexOfCurrentItem].quantity + 1) * copyExtCartItems[findIndexOfCurrentItem].price,
 
+               }
          }
          console.log(copyExtCartItems , "copyExtCartItems");
          setCartItems(copyExtCartItems);
          localStorage.setItem('cartItems', JSON.stringify(copyExtCartItems))
-         navigate('cart')
+         
+    }
+
+    function handleRemoveFromCart(getProductDetails, isFullyRemoveFromCart){
+        let copyExtCartItems = [...cartItems];
+        const findIndexOfCurrentItem = copyExtCartItems.findIndex(item => item.id === getProductDetails.id)
+
+        if(isFullyRemoveFromCart){
+            copyExtCartItems.splice(findIndexOfCurrentItem,1)
+        } else {
+            copyExtCartItems[findIndexOfCurrentItem] = {
+                ...copyExtCartItems[findIndexOfCurrentItem],
+                quantity :copyExtCartItems[findIndexOfCurrentItem].quantity -1,
+                totalPrice: (copyExtCartItems[findIndexOfCurrentItem].quantity -1) * copyExtCartItems[findIndexOfCurrentItem].price,
+            }
+        }
+        setCartItems(copyExtCartItems);
+        localStorage.setItem('cartItems', JSON.stringify(copyExtCartItems))
+
     }
 
     // console.log(listOfProducts)
 
     return (
-        <ShoppingCartContext.Provider value={{listOfProducts, loading , setLoading , productDetails , setProductDetails, handleAddToCart, cartItems}}>
+        <ShoppingCartContext.Provider value={{listOfProducts, loading , setLoading , productDetails , setProductDetails, handleAddToCart, cartItems, handleRemoveFromCart}}>
             {children}
         </ShoppingCartContext.Provider>
     )

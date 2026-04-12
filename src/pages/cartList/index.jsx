@@ -21,10 +21,13 @@ function CartList(){
                 <hr className="py-3" />
                 <ul>
                     <p>Total</p>
+                    ${
+                       cartItems.reduce((acc, curr) => acc+curr.totalPrice ,0 ).toFixed(2)
+                    }
                 </ul>
                 <div className="flex flex-col sm:flex-row gap-2 pt-5">
-                    <button className="bg-black text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-500">Checkout</button>
-                    <button onClick={()=>navigate('/product-list')}
+                    <button disabled={cartItems?.length === 0} className="bg-black text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-500 disabled:opacity-30 disabled:cursor-not-allowed">Checkout</button>
+                    <button onClick={()=>navigate('/')}
                      className="bg-black text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-500">Continue Shopping</button>
                 </div>
             </div>

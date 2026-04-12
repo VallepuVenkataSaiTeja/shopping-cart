@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { ShoppingCartContext } from "../context";
 
 function ProductTile({singleProductItem}){
+    const {handleAddToCart,cartItems} = useContext(ShoppingCartContext)
 
     const navigate = useNavigate();
 
@@ -19,7 +22,10 @@ function ProductTile({singleProductItem}){
             </div>
             <button onClick={()=> handleNavigateToProductDetailsPage(singleProductItem?.id)}
              className="my-3 text-white bg-black px-5 py-3 rounded cursor-pointer hover:bg-gray-700">View Details</button>
-        </div>
+            <button className="border rounded px-5 py-3 cursor-pointer hover:bg-gray-900 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+             onClick={()=>handleAddToCart(singleProductItem)}
+             disabled={cartItems.findIndex(item => item.id === singleProductItem.id) > -1} >Add to cart</button>
+            </div>
     )
 }
 export default ProductTile;

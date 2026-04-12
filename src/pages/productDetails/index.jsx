@@ -4,7 +4,7 @@ import { ShoppingCartContext } from "../../context";
 
 function ProductDetails(){
 
-    const {productDetails, setProductDetails, handleAddToCart } = useContext(ShoppingCartContext)
+    const {productDetails, setProductDetails, handleAddToCart, cartItems } = useContext(ShoppingCartContext)
     const navigate = useNavigate()
 
     const {id} = useParams();
@@ -58,8 +58,9 @@ function ProductDetails(){
               <div className="w-full md:w-1/2 p-5 text-center md:text-left">
                  <h1 className="text-4xl font-bold text-center md:text-left">{productDetails?.title}</h1>
                  <p className="my-5 text-xl font-bold text-green-800 text-center md:text-left">${productDetails?.price}</p>
-                 <button className="border rounded px-5 py-3 cursor-pointer hover:bg-gray-900 hover:text-white"
-                 onClick={()=>handleAddToCart(productDetails)}>Add to cart</button>
+                 <button className="border rounded px-5 py-3 cursor-pointer hover:bg-gray-900 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                 onClick={()=>handleAddToCart(productDetails)}
+                 disabled={cartItems.findIndex(item => item.id === productDetails.id) > -1} >Add to cart</button>
             </div>
         </div>
     )
